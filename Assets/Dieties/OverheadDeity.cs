@@ -25,6 +25,14 @@ public class OverheadDeity : DeityController
         
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+            mGrabbers[0].Grab();
+        if (Input.GetMouseButtonUp(0))
+            mGrabbers[0].Release();
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -37,8 +45,14 @@ public class OverheadDeity : DeityController
             mSearchDist,
             mGameBoardLayerMask))
         {
-            Vector3 handPos = hit.point + new Vector3(0, mHandHeight, 0);
-            mGrabbers[0].MoveHand(handPos, Quaternion.identity);
+            Vector3 p = hit.point;
+            Vector3 dir = Camera.main.transform.position - p;
+            Vector3 flat = new Vector3(dir.x, 0, dir.z);
+            float angle = Vector3.Angle(dir.normalized, flat.normalized) * Mathf.PI / 180.0f;
+            float sin = Mathf.Sin(angle);
+            float scalar = Mathf.Abs(mHandHeight / sin);
+            Vector3 t = (dir.normalized * scalar) + p;
+            mGrabbers[0].MoveHand(t, Quaternion.identity);
         }
     }
 }
