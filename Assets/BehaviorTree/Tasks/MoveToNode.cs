@@ -71,3 +71,32 @@ public abstract class MoveTo : BehaviorNode
         return withinDistance;
     }
 }
+
+public class MoveToLerp : MoveTo
+{
+    public override bool Run()
+    {
+        Vector3 target = GetTarget();
+        GameObject obj = mTree.gameObject;
+        Vector3 current = obj.transform.position;
+        float speed = GetSpeed() * Time.deltaTime;
+        Vector3 newPosition = Vector3.Lerp(current, target, speed);
+        obj.transform.position = newPosition;
+        return !CheckIfWithinThreshold();
+    }
+}
+
+public class MoveToSimple : MoveTo
+{
+    public override bool Run()
+    {
+        Vector3 target = GetTarget();
+        GameObject obj = mTree.gameObject;
+        Vector3 current = obj.transform.position;
+        float speed = GetSpeed() * Time.deltaTime;
+        Vector3 delta = (target - current).normalized * speed;
+        Vector3 newPosition = current + delta;
+        obj.transform.position = newPosition;
+        return !CheckIfWithinThreshold();
+    }
+}

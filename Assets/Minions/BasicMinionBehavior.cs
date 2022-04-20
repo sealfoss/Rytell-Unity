@@ -18,14 +18,15 @@ public class BasicMinionBehavior : BehaviorTree
         Random.Range(minMax[0], minMax[1]),
         Random.Range(minMax[2], minMax[3]),
         Random.Range(minMax[4], minMax[5]));
+        float speed = Random.Range(1, 20);
 
         mRoot = this.gameObject.AddComponent<SelectorNode>();
         mRoot.SetTree(this);
 
-        MoveToSimple move = this.gameObject.AddComponent<MoveToSimple>();
+        MoveTo move = this.gameObject.AddComponent<MoveToSimple>();
         move.SetTree(this);
         move.SetKeys(targetKey, speedKey, thresholdKey);
-        move.SetValues(1.0f, rand, 0.1f);
+        move.SetValues(speed, rand, 0.1f);
 
         GetRandomPointNode point = this.gameObject.AddComponent<GetRandomPointNode>();
         point.SetTree(this);
