@@ -20,7 +20,7 @@ public class BasicMinionBehavior : BehaviorTree
         Random.Range(minMax[4], minMax[5]));
         float speed = Random.Range(1, 20);
 
-        mRoot = this.gameObject.AddComponent<SelectorNode>();
+        mRoot = this.gameObject.AddComponent<SequenceNode>();
         mRoot.SetTree(this);
 
         MoveTo move = this.gameObject.AddComponent<MoveToSimple>();
