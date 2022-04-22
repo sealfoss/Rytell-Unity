@@ -70,7 +70,7 @@ public class BasicMinionBehavior : BehaviorTree
         set
         {
             mMoveTarget = value;
-            mMoveNode.SetTarget(mMoveTarget);
+            mMoveNode.Target = mMoveTarget;
         }
     }
 
@@ -83,7 +83,7 @@ public class BasicMinionBehavior : BehaviorTree
         set
         {
             mMoveSpeed = value;
-            mMoveNode.SetSpeed(mMoveSpeed);
+            mMoveNode.Speed = mMoveSpeed;
         }
     }
 
@@ -96,7 +96,7 @@ public class BasicMinionBehavior : BehaviorTree
         set
         {
             mMoveThreshold = value;
-            mMoveNode.SetThreshold(mMoveThreshold);
+            mMoveNode.Threshold = mMoveThreshold;
         }
     }
 
@@ -251,7 +251,7 @@ public class BasicMinionBehavior : BehaviorTree
         set
         {
             mAttackTarget = value;
-            mAttackMoveNode.SetTarget(mAttackTarget);
+            mAttackMoveNode.Target = mAttackTarget;
         }
     }
 
@@ -264,7 +264,7 @@ public class BasicMinionBehavior : BehaviorTree
         set
         {
             mAttackDistance = value;
-            mAttackMoveNode.SetThreshold(mAttackDistance);
+            mAttackMoveNode.Threshold = mAttackDistance;
         }
     }
 
@@ -277,7 +277,7 @@ public class BasicMinionBehavior : BehaviorTree
         set
         {
             mAttackSpeed = value;
-            mAttackMoveNode.SetSpeed(mAttackSpeed);
+            mAttackMoveNode.Speed = mAttackSpeed;
         }
     }
 
@@ -295,34 +295,43 @@ public class BasicMinionBehavior : BehaviorTree
 
         //mRoot = this.gameObject.AddComponent<SelectorNode>();
         mRoot = this.gameObject.AddComponent<SequenceNode>();
+        mRoot.Tree = this;
 
         mMoveNode = this.gameObject.AddComponent<MoveToSimple>();
+        mMoveNode.Tree = this;
         mMoveNode.SetKeys(mMoveTargetKey, mMoveSpeedKey, mMoveThresholdKey);
-        mMoveNode.SetValues(speed, rand, 0.1f);
+        mMoveNode.SetValues(rand, speed, 0.1f);
 
         mRandomNode = this.gameObject.AddComponent<GetRandomPointNode>();
+        mRandomNode.Tree = this;
         mRandomNode.SetKeys(mMinMaxKey, mMoveTargetKey);
         mRandomNode.SetMinMaxVals(minMax);
 
         mWaitNode = this.gameObject.AddComponent<WaitNode>();
+        mWaitNode.Tree = this;
         mWaitNode.SetKey(mWaitKey);
         mWaitNode.SetWaitTime(2.0f);
 
         mAttackingBoolNode = this.gameObject.AddComponent<CheckBoolNode>();
+        mAttackingBoolNode.Tree = this;
         mAttackingBoolNode.Key = mAttackingKey;
         mAttackingBoolNode.Val = false;
 
         mAttackMoveNode = this.gameObject.AddComponent<MoveToSimple>();
+        mAttackMoveNode.Tree = this;
         mAttackMoveNode.SetKeys(mAttackTargetKey, mAttackSpeedKey, mAttackDistanceKey);
 
         mAttackNode = this.gameObject.AddComponent<BasicMinionAttackNode>();
+        mAttackNode.Tree = this;
         
         SequenceNode attackSequence = this.gameObject.AddComponent<SequenceNode>();
+        attackSequence.Tree = this;
         attackSequence.AddChild(mAttackingBoolNode);
         attackSequence.AddChild(mMoveNode);
         attackSequence.AddChild(null);
         
         SequenceNode wanderSequence = this.gameObject.AddComponent<SequenceNode>();
+        wanderSequence.Tree = this;
         wanderSequence.AddChild(mMoveNode);
         wanderSequence.AddChild(mWaitNode);
         wanderSequence.AddChild(mRandomNode);
