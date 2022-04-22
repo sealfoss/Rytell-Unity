@@ -41,6 +41,4 @@ public class ScreenGrabber : Grabber
             mActivated = null;
         }
     }
-
-
 }

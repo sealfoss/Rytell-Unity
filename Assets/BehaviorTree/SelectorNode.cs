@@ -8,6 +8,11 @@ using UnityEngine;
 /// </summary>
 public class SelectorNode : BehaviorNode
 {
+
+    /// <summary>
+    /// Executes the behavior inherent to the owning node.
+    /// </summary>
+    /// <returns>Returns true if behavior is successfully executed, false if otherwise.</returns>
     public override bool Run()
     {
         bool success = false;

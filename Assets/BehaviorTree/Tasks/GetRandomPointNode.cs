@@ -17,6 +17,11 @@ public class GetRandomPointNode : BehaviorNode
     /// </summary>
     private string mPointKey;
 
+    /// <summary>
+    /// Sets keys for multiple variables at once.
+    /// </summary>
+    /// <param name="minMaxKey">Key for min max values in blackboard.</param>
+    /// <param name="pointKey">Key for vector point in blackboard.</param>
     public void SetKeys(string minMaxKey, string pointKey)
     {
         mMinMaxKey = minMaxKey;

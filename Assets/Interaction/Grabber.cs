@@ -2,15 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Grabs game objects that have attached components implementing IInteractive interface.
+/// </summary>
 public abstract class Grabber : MonoBehaviour
 {
+    /// <summary>
+    /// Player class.
+    /// </summary>
     protected DeityController mDeity;
+
+    /// <summary>
+    /// Object that has been grabbed, if any.
+    /// </summary>
     protected IInteractive<Grabber> mGrabbed;
+
+    /// <summary>
+    /// Object selected to be grabbed, if any.
+    /// </summary>
     protected IInteractive<Grabber> mSelected;
+
+    /// <summary>
+    /// Object activated by this grabber, if any.
+    /// </summary>
     protected IInteractive<Grabber> mActivated;
+
+    /// <summary>
+    /// The type of movement supported by this grabber.
+    /// </summary>
     protected Mover mMover;
+
+    /// <summary>
+    /// Gameobject representing the grabbing "hand" in the game world.
+    /// </summary>
     protected GameObject mHand;
+
+    /// <summary>
+    /// Objects currently available to be grabbed.
+    /// </summary>
     protected List<IInteractive<Grabber>> mAvailable;
+
+    /// <summary>
+    /// Detects objects overlapping hand.
+    /// </summary>
     protected TriggerDetector mDetector;
 
     private void Update()

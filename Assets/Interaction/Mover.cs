@@ -18,7 +18,6 @@ public abstract class Mover : MonoBehaviour
         switch(type)
         {
             case MovementType.PHYS:
-                mover = gameObject.AddComponent<PhysicalMover>(); //new PhysicalMover();
                 break;
             case MovementType.LERP:
                 break;
