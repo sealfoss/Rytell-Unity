@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Executes child node logic in sequence, stops at the first child that returns false.
+/// Returns true if all children execute and return true.
+/// </summary>
 public class SequenceNode : BehaviorNode
 {
     public override bool Run()

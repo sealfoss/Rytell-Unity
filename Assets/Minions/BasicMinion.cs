@@ -2,21 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Governs basic minion behavior, status, and initialization.
+/// </summary>
 public class BasicMinion : MinionController
 {
+    /// <summary>
+    /// Reference to governing basic minion behavior tree.
+    /// </summary>
+    private BasicMinionBehavior mMinionBehavior;
 
+    /// <summary>
+    /// Minion decided to be worthy, and closest, opponent.
+    /// </summary>
+    private MinionController mToAttack;
 
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
     protected override void Awake()
     {
         base.Awake();
-        mBehavior = this.gameObject.AddComponent<BasicMinionBehavior>();
+        
+        mMinionBehavior = this.gameObject.GetComponent<BasicMinionBehavior>();
+        mMinionBehavior.Minion = this;
+        mBehavior = (BehaviorTree)mMinionBehavior;
         mBehavior.Activate();
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Update is called every frame.
+    /// </summary>
+    private void Update()
     {
+        DetectEnemies();
         RunBehavior();
+    }
+
+    /// <summary>
+    /// If there are enemies within range, the closest is found,
+    /// designated as an attack target, and attacked.
+    /// </summary>
+    private void DetectEnemies()
+    {
+        mToAttack = GetClosestEnemey();
+        if(mToAttack != null)
+        {
+            mMinionBehavior.AttackTarget = mToAttack.transform.position;
+            mMinionBehavior.Attacking = true;
+        }
+        else
+        {
+            mMinionBehavior.Attacking = false;
+        }
     }
 
     public override void Grab(Grabber grabbing)
@@ -25,6 +63,7 @@ public class BasicMinion : MinionController
         mBehavior.Deactivate();
         SetColor();
     }
+
 
     public override void Release(Grabber releasing)
     {
