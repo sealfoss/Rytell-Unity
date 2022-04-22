@@ -156,6 +156,11 @@ public abstract class MoveTo : BehaviorNode
 /// </summary>
 public class MoveToLerp : MoveTo
 {
+
+    /// <summary>
+    /// Executes the behavior inherent to the owning node.
+    /// </summary>
+    /// <returns>Returns true if behavior is successfully executed, false if otherwise.</returns>
     public override bool Run()
     {
         bool success = CheckIfWithinThreshold();
@@ -178,6 +183,11 @@ public class MoveToLerp : MoveTo
 /// </summary>
 public class MoveToSimple : MoveTo
 {
+
+    /// <summary>
+    /// Executes the behavior inherent to the owning node.
+    /// </summary>
+    /// <returns>Returns true if behavior is successfully executed, false if otherwise.</returns>
     public override bool Run()
     {
         bool success = CheckIfWithinThreshold();

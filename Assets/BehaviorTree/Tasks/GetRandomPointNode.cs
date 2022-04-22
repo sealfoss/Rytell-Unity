@@ -53,15 +53,9 @@ public class GetRandomPointNode : BehaviorNode
     }
 
     /// <summary>
-    /// Gets the value stored in the blackboard at teh given key.
+    /// Executes the behavior inherent to the owning node.
     /// </summary>
-    /// <returns></returns>
-    private Vector3 GetPoint()
-    {
-        Vector3[] value = mTree.GetBlackboardValue<Vector3[]>(mPointKey);
-        return value[0];
-    }
-
+    /// <returns>Returns true if behavior is successfully executed, false if otherwise.</returns>
     public override bool Run()
     {
         float[] minMax = GetMinMaxValues();

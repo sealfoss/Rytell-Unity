@@ -309,8 +309,8 @@ public class BasicMinionBehavior : BehaviorTree
 
         mWaitNode = this.gameObject.AddComponent<WaitNode>();
         mWaitNode.Tree = this;
-        mWaitNode.SetKey(mWaitKey);
-        mWaitNode.SetWaitTime(2.0f);
+        mWaitNode.WaitTimeKey = mWaitKey;
+        mWaitNode.WaitTime = 2.0f;
 
         mAttackingBoolNode = this.gameObject.AddComponent<CheckBoolNode>();
         mAttackingBoolNode.Tree = this;

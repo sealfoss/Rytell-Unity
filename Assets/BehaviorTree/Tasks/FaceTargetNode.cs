@@ -15,11 +15,7 @@ public class FaceTargetNode : BehaviorNode
     /// <summary>
     /// Accessors for target key.
     /// </summary>
-    private string TargetKey
-    {
-        get => mTargetKey;
-        set => mTargetKey = value;
-    }
+    private string TargetKey { get => mTargetKey; set => mTargetKey = value; }
 
     /// <summary>
     /// Target to rotate towards.
@@ -53,11 +49,7 @@ public class FaceTargetNode : BehaviorNode
     /// <summary>
     /// Accessors for rotation speed key.
     /// </summary>
-    private string RotateSpeedKey
-    {
-        get => mRotateSpeedKey;
-        set => mRotateSpeedKey = value;
-    }
+    private string RotateSpeedKey { get => mRotateSpeedKey; set => mRotateSpeedKey = value; }
 
     /// <summary>
     /// Speed of rotation towards target.
