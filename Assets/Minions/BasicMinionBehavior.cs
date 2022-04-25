@@ -21,40 +21,40 @@ public class BasicMinionBehavior : BehaviorTree
     public BasicMinion Minion { get => mMinion; set => mMinion = value; }
 
 
-    /* Movement Members */ 
+    /* Movement Members */
 
     /// <summary>
     /// Where the minion is headed.
     /// </summary>
+    [SerializeField]
     private Vector3 mMoveTarget;
 
     /// <summary>
     /// Blackboard key for move target.
     /// </summary>
-    [SerializeField]
-    private string mMoveTargetKey;
+    private string mMoveTargetKey = "MoveTargetKey";
 
     /// <summary>
     /// How fast the minion can move towards a target.
     /// </summary>
+    [SerializeField]
     private float mMoveSpeed;
 
     /// <summary>
     /// Key for movment speed value.
     /// </summary>
-    [SerializeField]
-    private string mMoveSpeedKey;
+    private string mMoveSpeedKey = "MoveSpeedKey";
 
     /// <summary>
     /// How close to a target the minion needs to be before it considers itself as arrived.
     /// </summary>
+    [SerializeField]
     private float mMoveThreshold;
 
     /// <summary>
     /// Balackboard key for movement threshold.
     /// </summary>
-    [SerializeField]
-    private string mMoveThresholdKey;
+    private string mMoveThresholdKey = "MoveThresholdKey";
 
     /// <summary>
     /// Behavior node governing minion movment.
@@ -100,19 +100,69 @@ public class BasicMinionBehavior : BehaviorTree
         }
     }
 
+    /// <summary>
+    /// Behavior node controlling where the minion is facing while wandering.
+    /// </summary>
+    private FaceTargetNode mFaceNode;
+
+    /// <summary>
+    /// How fast to rotate towards target while moving around.
+    /// </summary>
+    [SerializeField]
+    private float mRotationSpeed;
+
+    /// <summary>
+    /// Accessors for rotation speed.
+    /// </summary>
+    public float RotationSpeed
+    {
+        get => mRotationSpeed;
+        set
+        {
+            mRotationSpeed = value;
+            mFaceNode.RotateSpeed = mRotationSpeed;
+        }
+    }
+
+    /// <summary>
+    /// Blackboard key for rotation speed.
+    /// </summary>
+    private string mRotationSpeedKey = "MoveRotationSpeedKey";
+
+    /// <summary>
+    /// Tolerance between current rotation and target rotation, in degrees.
+    /// </summary>
+    [SerializeField]
+    private float mRotationThreshold;
+
+    /// <summary>
+    /// Key for accessing rotation threshold in behavior tree blackboard.
+    /// </summary>
+    private string mRotationThresholdKey = "RotationThresholdKey";
+
+    public float RotationThreshold
+    {
+        get => mRotationThreshold;
+        set
+        {
+            mRotationThreshold = value;
+            mFaceNode.RotationThreshold = mRotationThreshold;
+        }
+    }
+
 
     /* Random Position Members */
 
     /// <summary>
     /// Bounds of movement for minion on X, Y, Z.
     /// </summary>
+    [SerializeField]
     private float[] mMinMaxRange;
 
     /// <summary>
     /// Blackboard key for min/max range.
     /// </summary>
-    [SerializeField]
-    private string mMinMaxKey;
+    private string mMinMaxKey = "MinMaxKey";
 
     /// <summary>
     /// Behavior node responsible for generating random move-to positions.
@@ -138,13 +188,13 @@ public class BasicMinionBehavior : BehaviorTree
     /// <summary>
     /// How long the minion should wait after arriving at its target before moving on to something else.
     /// </summary>
+    [SerializeField]
     private float mWaitTime;
 
     /// <summary>
     /// Blackboard key for wait time.
     /// </summary>
-    [SerializeField]
-    private string mWaitKey;
+    private string mWaitKey = "WaitKey";
 
     /// <summary>
     /// Behavior node controlling wait time.
@@ -172,8 +222,7 @@ public class BasicMinionBehavior : BehaviorTree
     /// <summary>
     /// Blackboard key for attacking bool.
     /// </summary>
-    [SerializeField]
-    private string mAttackingKey;
+    private string mAttackingKey = "AttackingKey";
 
     /// <summary>
     /// Bool check node for attack.
@@ -194,12 +243,6 @@ public class BasicMinionBehavior : BehaviorTree
     }
 
     /// <summary>
-    /// Attack node key.
-    /// </summary>
-    [SerializeField]
-    private string mAttackKey;
-
-    /// <summary>
     /// Behavior node governing attack.
     /// </summary>
     private BasicMinionAttackNode mAttackNode;
@@ -207,24 +250,24 @@ public class BasicMinionBehavior : BehaviorTree
     /// <summary>
     /// Position of other minion to attack.
     /// </summary>
+    [SerializeField]
     private Vector3 mAttackTarget;
 
     /// <summary>
     /// Blackboard key for attack target.
     /// </summary>
-    [SerializeField]
-    private string mAttackTargetKey;
+    private string mAttackTargetKey = "AttackTargetKey";
 
     /// <summary>
     /// How fast the minion can move towards an attack target.
     /// </summary>
+    [SerializeField]
     private float mAttackSpeed;
 
     /// <summary>
     /// Key for movment speed value.
     /// </summary>
-    [SerializeField]
-    private string mAttackSpeedKey;
+    private string mAttackSpeedKey = "AttackSpeedKey";
 
     /// <summary>
     /// How close to an attack target the minion needs to be before it attacks.
@@ -234,8 +277,7 @@ public class BasicMinionBehavior : BehaviorTree
     /// <summary>
     /// Balackboard key for movement threshold.
     /// </summary>
-    [SerializeField]
-    private string mAttackDistanceKey;
+    private string mAttackDistanceKey = "AttackDistanceKey";
 
     /// <summary>
     /// Behavior node governing minion movment towards attack target.
@@ -281,17 +323,87 @@ public class BasicMinionBehavior : BehaviorTree
         }
     }
 
+    private FaceTargetNode mArmRotator;
+
+    /// <summary>
+    /// Key for arm rotation target.
+    /// </summary>
+    private string mArmRotationTargetKey = "RotateArmTargetKey";
+
+    /// <summary>
+    /// Direction to rotate the arm towards.
+    /// </summary>
+    private Vector3 mArmRotationTarget;
+
+    public Vector3 ArmRotationTarget
+    {
+        get => mArmRotationTarget;
+        set
+        {
+            mArmRotationTarget = value;
+            mArmRotator.Target = mArmRotationTarget;
+        }
+    }
+
+    /// <summary>
+    /// Key for arm rotation speed.
+    /// </summary>
+    private string mArmRotationSpeedKey = "RotateArmSpeedKey";
+
+    /// <summary>
+    /// How fast the arm should rotate into place.
+    /// </summary>
+    [SerializeField]
+    private float mArmRotationSpeed;
+
+    /// <summary>
+    /// Accessor for arm rotation speed.
+    /// </summary>
+    public float ArmRotationSpeed
+    {
+        get => mArmRotationSpeed;
+        set 
+        {
+            mArmRotationSpeed = value;
+            mArmRotator.RotateSpeed = mArmRotationSpeed;
+        }
+    }
+
+    /// <summary>
+    /// Blackboard key for arm rotation threshold.
+    /// </summary>
+    private string mArmRotationThresholdKey = "ArmRotationThresholdKey";
+
+    /// <summary>
+    /// Arm rotation threshold.
+    /// </summary>
+    [SerializeField]
+    private float mArmRotationThreshold;
+
+    /// <summary>
+    /// Accessor for arm rotation threshold.
+    /// </summary>
+    public float ArmRotationThreshold
+    {
+        get => mArmRotationThreshold;
+        set 
+        { 
+            mArmRotationThreshold = value;
+            mArmRotator.RotationThreshold = mArmRotationThreshold;
+        }
+    }
+    
+
     /// <summary>
     /// Sets up a behavior tree according to desired behavior of Basic Minions.
     /// </summary>
     protected override void BuildTree()
     {
-        float[] minMax = { -8, 8, 1, 1, -8, 8 };
+        mMinion = this.GetComponent<BasicMinion>();
         Vector3 rand = new Vector3(
-            Random.Range(minMax[0], minMax[1]),
-            Random.Range(minMax[2], minMax[3]),
-            Random.Range(minMax[4], minMax[5]));
-        float speed = Random.Range(1, 20);
+            Random.Range(mMinMaxRange[0], mMinMaxRange[1]),
+            Random.Range(mMinMaxRange[2], mMinMaxRange[3]),
+            Random.Range(mMinMaxRange[4], mMinMaxRange[5]));
 
         //mRoot = this.gameObject.AddComponent<SelectorNode>();
         mRoot = this.gameObject.AddComponent<SequenceNode>();
@@ -300,12 +412,23 @@ public class BasicMinionBehavior : BehaviorTree
         mMoveNode = this.gameObject.AddComponent<MoveToSimple>();
         mMoveNode.Tree = this;
         mMoveNode.SetKeys(mMoveTargetKey, mMoveSpeedKey, mMoveThresholdKey);
-        mMoveNode.SetValues(rand, speed, 0.1f);
+        mMoveNode.SetValues(rand, mMoveSpeed, mMoveThreshold);
+
+        mFaceNode = this.gameObject.AddComponent<FaceTargetNode>();
+        mFaceNode.Tree = this;
+        mFaceNode.ToRotate = this.gameObject.transform;
+        mFaceNode.TargetKey = mMoveTargetKey;
+        mFaceNode.FaceImmediately = false;
+        mFaceNode.RotateSpeedKey = mRotationSpeedKey;
+        mFaceNode.RotateSpeed = mRotationSpeed;
+        mFaceNode.RotationThresholdKey = mRotationThresholdKey;
+        mFaceNode.RotationThreshold = mRotationThreshold;
+        mFaceNode.SucceedWhileRotating = true;
 
         mRandomNode = this.gameObject.AddComponent<GetRandomPointNode>();
         mRandomNode.Tree = this;
         mRandomNode.SetKeys(mMinMaxKey, mMoveTargetKey);
-        mRandomNode.SetMinMaxVals(minMax);
+        mRandomNode.SetMinMaxVals(mMinMaxRange);
 
         mWaitNode = this.gameObject.AddComponent<WaitNode>();
         mWaitNode.Tree = this;
@@ -323,7 +446,21 @@ public class BasicMinionBehavior : BehaviorTree
 
         mAttackNode = this.gameObject.AddComponent<BasicMinionAttackNode>();
         mAttackNode.Tree = this;
-        
+
+        mArmRotator = this.gameObject.AddComponent<FaceTargetNode>();
+        mArmRotator.Tree = this;
+        mArmRotator.ToRotate = Minion.ArmTransform;
+        mArmRotator.TargetKey = mArmRotationTargetKey;
+        mArmRotator.Target = Vector3.up;
+        mArmRotator.RotateSpeedKey = mArmRotationSpeedKey;
+        mArmRotator.RotateSpeed = mArmRotationSpeed;
+        mArmRotator.RotationThresholdKey = mArmRotationThresholdKey;
+        mArmRotator.RotationThreshold = mArmRotationThreshold;
+        mArmRotator.SucceedWhileRotating = true;
+        mArmRotator.FaceImmediately = false;
+       
+
+
         SequenceNode attackSequence = this.gameObject.AddComponent<SequenceNode>();
         attackSequence.Tree = this;
         attackSequence.AddChild(mAttackingBoolNode);
@@ -339,7 +476,8 @@ public class BasicMinionBehavior : BehaviorTree
         //mRoot.AddChild(attackSequence);
         //mRoot.AddChild(wanderSequence);
 
-        
+        //mRoot.AddChild(mArmRotator);
+        mRoot.AddChild(mFaceNode);
         mRoot.AddChild(mMoveNode);
         mRoot.AddChild(mWaitNode);
         mRoot.AddChild(mRandomNode);

@@ -56,7 +56,7 @@ public abstract class Grabber : MonoBehaviour
     {
         IInteractive<Grabber> interacted = 
             collision.gameObject.GetComponent<IInteractive<Grabber>>();
-        if (interacted != null)
+        if (interacted != null && interacted.IsAvailable())
             mAvailable.Add(interacted);
     }
 
@@ -74,17 +74,30 @@ public abstract class Grabber : MonoBehaviour
         {
             float closestDist = float.MaxValue;
             IInteractive<Grabber> closest = null;
+            List<IInteractive<Grabber>> toRemove = new List<IInteractive<Grabber>>();
 
             foreach (IInteractive<Grabber> i in mAvailable)
             {
-                GameObject obj = i.GetGameObject();
-                Vector3 pos = obj.transform.position;
-                float dist = Vector3.Magnitude(this.transform.position - pos);
-                if(closestDist > dist)
+                if (i.IsAvailable())
                 {
-                    closestDist = dist;
-                    closest = i;
+                    GameObject obj = i.GetGameObject();
+                    Vector3 pos = obj.transform.position;
+                    float dist = Vector3.Magnitude(this.transform.position - pos);
+                    if (closestDist > dist)
+                    {
+                        closestDist = dist;
+                        closest = i;
+                    }
                 }
+                else
+                {
+                    toRemove.Add(i);
+                }
+            }
+
+            foreach(IInteractive<Grabber> i in toRemove)
+            {
+                mAvailable.Remove(i);
             }
 
             if(mSelected != null && mSelected != closest)

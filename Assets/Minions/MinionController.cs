@@ -77,12 +77,51 @@ public abstract class MinionController : MonoBehaviour, IInteractive<Grabber>, I
     /// </summary>
     protected HashSet<MinionController> mEnemies;
 
+    /// <summary>
+    /// Whether this minion is dead.
+    /// </summary>
+    protected bool mDead;
+
+    /// <summary>
+    /// Accessor for death bool.
+    /// </summary>
+    public bool Dead { get => mDead; }
+
+    /// <summary>
+    /// How long to wait after death to delete game object.
+    /// </summary>
+    [SerializeField]
+    protected float mDeathDuration;
+
+    /// <summary>
+    /// Used to measure how long since being killed.
+    /// </summary>
+    protected float mTimeSinceDeath;
+
+    /// <summary>
+    /// Business end of minion's spear.
+    /// </summary>
+    [SerializeField]
+    protected TriggerDetector mHitter;
+
+    /// <summary>
+    /// Minion being hit by this minion.
+    /// </summary>
+    protected MinionController mVictim;
+
+    /// <summary>
+    /// Particle effect played when minion kills another.
+    /// </summary>
+    [SerializeField]
+    protected ParticleSystem mDeathEffect;
+
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
     protected virtual void Awake()
     {
+        mAvailable = true;
         mEnemies = new HashSet<MinionController>();
         mGrabbedBy = new HashSet<Grabber>();
         mSelectedBy = new HashSet<Grabber>();
@@ -92,6 +131,11 @@ public abstract class MinionController : MonoBehaviour, IInteractive<Grabber>, I
         SetColor();
         SetEnemeyDetector();
     }
+
+    /// <summary>
+    /// Tells this minion to go die, cleans up gameobject, etc.
+    /// </summary>
+    public abstract void Die();
 
     /// <summary>
     /// Gets the closest enemy to this minion.
@@ -238,6 +282,11 @@ public abstract class MinionController : MonoBehaviour, IInteractive<Grabber>, I
     }
 
     /// <summary>
+    /// Whether this object can be grabbed.
+    /// </summary>
+    protected bool mAvailable;
+
+    /// <summary>
     /// Finds the closest minion to this minion in given collection.
     /// </summary>
     /// <param name="otherMinions">Collection of other minions.</param>
@@ -252,16 +301,24 @@ public abstract class MinionController : MonoBehaviour, IInteractive<Grabber>, I
 
             foreach(MinionController minion in otherMinions)
             {
-                float dist = Vector3.Distance(minion.transform.position, this.transform.position);
-                if(dist < closestDist)
+                if (!minion.Dead)
                 {
-                    closest = minion;
-                    closestDist = dist;
+                    float dist = Vector3.Distance(minion.transform.position, this.transform.position);
+                    if (dist < closestDist)
+                    {
+                        closest = minion;
+                        closestDist = dist;
+                    }
                 }
             }
         }
 
         return closest;
+    }
+
+    public bool IsAvailable()
+    {
+        return mAvailable;
     }
 
     /// <summary>

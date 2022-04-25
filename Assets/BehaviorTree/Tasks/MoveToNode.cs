@@ -201,6 +201,7 @@ public class MoveToSimple : MoveTo
             Vector3 newPosition = current + delta;
             obj.transform.position = newPosition;
         }
+
         return success;
     }
 }

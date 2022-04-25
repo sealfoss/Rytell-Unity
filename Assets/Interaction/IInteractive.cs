@@ -13,4 +13,6 @@ public interface IInteractive<T>
     public bool IsGrabbed();
     public HashSet<T> GrabbedBy();
     public GameObject GetGameObject();
+
+    public bool IsAvailable();
 }
